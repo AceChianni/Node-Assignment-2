@@ -1,22 +1,30 @@
-const inquirer = require('inquirer');
-const cowsay = require('cowsay');
-const chalk = require('chalk');
-const { favoriteLanguage } = require('./questions/favoriteLanguage');
-const { preferredFramework } = require('./questions/preferredFramework');
+import inquirer from 'inquirer';
+import { favoriteAnime } from './questions/favoriteAnime.js';
+import { favoriteCharacter } from './questions/favoriteCharacter.js';
+import { preferredGenre } from './questions/preferredGenre.js';
+import { favoriteManga } from './questions/favoriteManga.js';
+import { quirkyQuestion } from './questions/quirkyQuestion.js';
+import cowsay from 'cowsay';
+import chalk from 'chalk';
+
+const questions = [
+  favoriteAnime,
+  favoriteCharacter,
+  preferredGenre,
+  favoriteManga,
+  quirkyQuestion
+];
 
 async function runSurvey() {
-  try {
-    // Prompt the user with questions
-    const answers = await inquirer.prompt([favoriteLanguage, preferredFramework]);
-
-    // Log a summary using cowsay and chalk
-    console.log(chalk.green('Thank you for completing the survey!'));
-    console.log(cowsay.say({
-      text: `Your favorite language is ${chalk.blue(answers.favoriteLanguage)} and your preferred framework is ${chalk.yellow(answers.preferredFramework)}!`
-    }));
-  } catch (error) {
-    console.error(chalk.red('Something went wrong during the survey!'), error);
-  }
+  console.log(chalk.blue('Welcome to the Anime Survey!'));
+  
+  const responses = await inquirer.prompt(questions);
+  
+  console.log(cowsay.say({
+    text: `Thank you for participating!\n\nHere's a summary of your preferences:\n\nFavorite Anime: ${responses.favoriteAnime}\nFavorite Character: ${responses.favoriteCharacter}\nPreferred Genres: ${responses.preferredGenre.join(', ')}\nFavorite Manga: ${responses.favoriteManga}\nPet Anime Character: ${responses.quirkyQuestion}`,
+    e: 'oO',
+    T: 'U '
+  }));
 }
 
 runSurvey();
